@@ -1,6 +1,6 @@
 {
   "name": "@allpass/web-sdk",
-  "version": "1.0.5",
+  "version": "1.0.2",
   "description": "Allpass javascript library",
   "main": "index.js",
   "repository": {
