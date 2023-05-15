@@ -26,13 +26,21 @@ You can find more details in the initial setup section of our documentation and 
 in [webhooks](https://docs.elkyc.com/elkyc-web-sdk/webhooks) section. 
 
 ## Installation
-Import library to your web application
+### Import library to your web application
 Start by adding the minified code to your webpage from the unpkg CDN in your HTML file:
 ```html
 <script
  type="text/javascript"
  src="https://unpkg.com/@allpass/web-sdk"
 ></script>
+```
+Or you can install it via npm:
+```bash
+npm install @allpass/web-sdk
+```
+And then import it in your code:
+```javascript
+import Allpass from '@allpass/web-sdk';
 ```
 
 ## Initialize SDK
@@ -49,9 +57,9 @@ let onStart: (event: {
 }) => void;
 ```
 Method that is being called once a user starts the verification flow.
-**appKey**: API Key
-**transactionId**: UUID of the verification.  You can use this to query our API.
-**clientSession**: Client session identifier in your system
+- **appKey**: API Key
+- **transactionId**: UUID of the verification.  You can use this to query our API.
+- **clientSession**: Client session identifier in your system
 ```javascript
 let onRestart: (event: {
   appKey: string;
@@ -60,9 +68,9 @@ let onRestart: (event: {
 }) => void;
 ```
 Method that is being called once a user starts the verification flow, but the  verification is not completed
-**appKey**: API Key
-**transactionId**: UUID of the verification.  You can use this to query our API.
-**clientSession**: Client session identifier in your system
+- **appKey**: API Key
+- **transactionId**: UUID of the verification.  You can use this to query our API.
+- **clientSession**: Client session identifier in your system
 ```javascript
 let onPassStep: (event: {
   appKey: string;
@@ -72,11 +80,11 @@ let onPassStep: (event: {
 }) => void;
 ```
 Method that is being called once a user pass any step of the verification flow.
-**stepType**:The step can be one of the following
+- **stepType**:The step can be one of the following
 "intro" | "biometry" | "documents" | "scan" | "diia" | "complete"
-**appKey**: API Key
-**transactionId**: UUID of the verification.  You can use this to query our API.
-**clientSession**: Client session identifier in your system
+- **appKey**: API Key
+- **transactionId**: UUID of the verification.  You can use this to query our API.
+- **clientSession**: Client session identifier in your system
 ```javascript
 let onComplete: (event: {
   appKey: string;
@@ -85,9 +93,9 @@ let onComplete: (event: {
 }) => void;
 ```
 Method that is being called once the verification is completed.
-**appKey**: API Key
-**transactionId**: UUID of the verification.  You can use this to query our API.
-**clientSession**: Client session identifier in your system
+- **appKey**: API Key
+- **transactionId**: UUID of the verification.  You can use this to query our API.
+- **clientSession**: Client session identifier in your system
 ```javascript
 let onError: (event: {
   appKey: string;
@@ -97,12 +105,12 @@ let onError: (event: {
   clientSession?: string;
 }) => void;
 ```
-**error**: The reason why the flow failed.
-**stepType**: The step where the error occurred, can be undefined or one of the following
+- **error**: The reason why the flow failed.
+- **stepType**: The step where the error occurred, can be undefined or one of the following
 "intro" | "biometry" | "documents" | "scan" | "diia" | "complete"
-**appKey**: API Key
-**transactionId**: UUID of the verification.  You can use this to query our API.
-**clientSession**: Client session identifier in your system
+- **appKey**: API Key
+- **transactionId**: UUID of the verification.  You can use this to query our API.
+- **clientSession**: Client session identifier in your system
 
 ```javascript
 Allpass.init({
