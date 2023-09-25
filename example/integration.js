@@ -2,8 +2,7 @@
  * Created by Viktor Plotnikov <viktorr.plotnikov@gmail.com>
  * Date: 12/03/2023 23:09
  */
-const appKey = 'YOUR APP KEY';
-const clientSession = 'Client session identifier in your system';
+const accessToken = 'ACCESS_TOKEN_FROM_PUBLIC_API';
 
 (() => {
   const allpassId = 'allpass';
@@ -52,7 +51,7 @@ const clientSession = 'Client session identifier in your system';
       onPassStep,
       onComplete,
       onError,
-    }).restart(clientSession);
+    }).restart();
   };
 
   /** create Allpass library */
@@ -65,6 +64,6 @@ const clientSession = 'Client session identifier in your system';
   /** start verification process */
   document.getElementById('start').onclick = async () => {
     setElmsDisplay('start', 'loader');
-    await window.Allpass.start(appKey, clientSession);
+    await window.Allpass.start(accessToken);
   };
 })();
