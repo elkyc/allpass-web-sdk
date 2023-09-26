@@ -1,13 +1,11 @@
-# [Allpass](https://allpass.ai) Javascript Library
+# [Allpass.ai (by elKYC)](https://allpass.ai) Javascript Library
 For full documentation, visit [https://docs.elkyc.com](https://docs.elkyc.com)
 ## Introduction
-### Create elKYC (Allpass) Account
-In order for your application to communicate with elKYC (Allpass) you need to signup for
+### Create Allpass.ai Account
+In order for your application to communicate with Allpass.ai you need to signup for
 an account in our [workplace](https://workplace.elkyc.com/) and retrieve your development
-_API keys_ from `Integration > App Key`.
+_API keys_ from `Integration > App Key and Secret API Key`.
 
-You'll use your application App Key for all client-side SDKs (e.g. your web App or mobile Applications).
-You'll use your company private API key for all server-side libraries (e.g. your backend server).
 You can find more details on API key configurations in the
 [initial setup](https://docs.elkyc.com/elkyc-web-sdk/predefined-steps#create-allpass-account)
 section of our documentation.
@@ -59,7 +57,7 @@ let onStart: (event: {
 Method that is being called once a user starts the verification flow.
 - **appKey**: API Key
 - **transactionId**: UUID of the verification.  You can use this to query our API.
-- **clientSession**: Client session identifier in your system
+- **clientSession**: Client session (requestID) identifier in your system
 ```javascript
 let onRestart: (event: {
   appKey: string;
@@ -70,7 +68,7 @@ let onRestart: (event: {
 Method that is being called once a user starts the verification flow, but the  verification is not completed
 - **appKey**: API Key
 - **transactionId**: UUID of the verification.  You can use this to query our API.
-- **clientSession**: Client session identifier in your system
+- **clientSession**: Client session identifier (requestID) in your system
 ```javascript
 let onPassStep: (event: {
   appKey: string;
@@ -84,7 +82,7 @@ Method that is being called once a user pass any step of the verification flow.
 "intro" | "biometry" | "documents" | "scan" | "diia" | "complete"
 - **appKey**: API Key
 - **transactionId**: UUID of the verification.  You can use this to query our API.
-- **clientSession**: Client session identifier in your system
+- **clientSession**: Client session identifier (requestID) in your system
 ```javascript
 let onComplete: (event: {
   appKey: string;
@@ -95,7 +93,7 @@ let onComplete: (event: {
 Method that is being called once the verification is completed.
 - **appKey**: API Key
 - **transactionId**: UUID of the verification.  You can use this to query our API.
-- **clientSession**: Client session identifier in your system
+- **clientSession**: Client session identifier (requestID) in your system
 ```javascript
 let onError: (event: {
   appKey: string;
@@ -110,7 +108,7 @@ let onError: (event: {
 "intro" | "biometry" | "documents" | "scan" | "diia" | "complete"
 - **appKey**: API Key
 - **transactionId**: UUID of the verification.  You can use this to query our API.
-- **clientSession**: Client session identifier in your system
+- **clientSession**: Client session identifier (requestID) in your system
 
 ```javascript
 Allpass.init({
@@ -123,15 +121,15 @@ Allpass.init({
 });
 ```
 
-**_If user doesn't finish verification process and current session is still active - we can automatically start this verification. In order to make it you should call restart after init method with clientSession identifier param._**
+**_If user doesn't finish verification process and current session is still active - we can automatically start this verification. In order to make it you should call restart after init method._**
 ```javascript
-Allpass.restart(clientSession);
+Allpass.restart();
 ```
 Also it could be chaining with an init method:
 ```javascript
 Allpass
   .init({onComplete: ({appKey, transactionId, clientSession}) => {}})
-  .restart(clientSession);
+  .restart();
 ```
 
 ## Render SDK
@@ -139,12 +137,11 @@ Place the new HTML element where you want the component to render inside the bod
 ```html
 <div id="allpass"></div>
 ```
-In order for the verification flow to render correctly, you'll need to pass your appKey as an argument to the start function.  Optionally you can also specify clientSession identifier in your system
+In order for the verification flow to render correctly, you'll need to pass a valid **accessToken** as an argument to the start function. You can get **accessToken** from our public API. You can find more details in the [Public API](https://redoc.elkyc.com/#tag/Public-Api-Verification-Gateway-Service/operation/ApiVerificationController_createVerificationToken) section of our documentation.
 ```javascript
-const appKey = 'YOUR APP KEY';
-const clientSession = 'Client session id';
+const accessToken = 'ACCESS_TOKEN_FROM_PUBLIC_API';
 
-Allpass.start(appKey, clientSession);
+Allpass.start(accessToken);
 ```
 **_Make sure you're using your public App Key for this client-side SDK_**
 
@@ -181,8 +178,7 @@ index.html
 ```
 integration.js
 ```javascript
-const appKey = 'YOUR APP KEY';
-const clientSession = 'Client session id';
+const accessToken = 'ACCESS_TOKEN_FROM_PUBLIC_API';
 
 (() => {
   const allpassId = 'allpass';
@@ -231,7 +227,7 @@ const clientSession = 'Client session id';
       onPassStep,
       onComplete,
       onError,
-    }).restart(clientSession);
+    }).restart();
   };
 
   /** create Allpass library */
@@ -244,7 +240,7 @@ const clientSession = 'Client session id';
   /** start verification process */
   document.getElementById('start').onclick = async () => {
     setElmsDisplay('start', 'loader');
-    await window.Allpass.start(appKey, clientSession);
+    await window.Allpass.start(accessToken);
   };
 })();
 ```
