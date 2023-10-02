@@ -110,15 +110,22 @@ let onError: (event: {
 - **transactionId**: UUID of the verification.  You can use this to query our API.
 - **clientSession**: Client session identifier (requestID) in your system
 
+You can pass in the locale as a second argument to the init function. The default locale is the locale from the browser.
+Also, you can specify the locale while creating the verification token in the [Public API](https://redoc.elkyc.com/#tag/Public-Api-Verification-Gateway-Service/operation/ApiVerificationController_createVerificationToken) section of our documentation.
+**_In case you set the locale in both places, the locale from the init function will be used._**
+
 ```javascript
-Allpass.init({
-  onLoad: () => {},
-  onRestart: ({appKey, transactionId, clientSession}) => {},
-  onStart: ({appKey, transactionId, clientSession}) => {},
-  onPassStep: ({appKey, transactionId, stepType, clientSession}) => {},
-  onComplete: ({appKey, transactionId, clientSession}) => {},
-  onError: ({appKey, transactionId, error, stepType, clientSession}) => {},
-});
+Allpass.init(
+  { // event handlers
+    onLoad: () => {},
+    onRestart: ({appKey, transactionId, clientSession}) => {},
+    onStart: ({appKey, transactionId, clientSession}) => {},
+    onPassStep: ({appKey, transactionId, stepType, clientSession}) => {},
+    onComplete: ({appKey, transactionId, clientSession}) => {},
+    onError: ({appKey, transactionId, error, stepType, clientSession}) => {},
+  },
+  'uk-UA', // locale, default is locale from browser
+);
 ```
 
 **_If user doesn't finish verification process and current session is still active - we can automatically start this verification. In order to make it you should call restart after init method._**
@@ -128,7 +135,7 @@ Allpass.restart();
 Also it could be chaining with an init method:
 ```javascript
 Allpass
-  .init({onComplete: ({appKey, transactionId, clientSession}) => {}})
+  .init({onComplete: ({appKey, transactionId, clientSession}) => {}}, 'en-US')
   .restart();
 ```
 
